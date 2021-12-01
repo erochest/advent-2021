@@ -1,0 +1,4 @@
+packages:
+- day1
+extra-deps: []
+resolver: lts-18.18
