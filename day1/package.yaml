@@ -36,6 +36,7 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - day1
+    - Advent
 
 tests:
   day1-test:

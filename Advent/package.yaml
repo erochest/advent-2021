@@ -24,17 +24,8 @@ dependencies:
 
 library:
   source-dirs: src
-
-executables:
-  Advent-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - Advent
+  dependencies:
+  - bytestring
 
 tests:
   Advent-test:

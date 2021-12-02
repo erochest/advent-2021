@@ -5,21 +5,23 @@ import qualified Data.ByteString.Lazy.Char8 as C
 import Data.Maybe
 import Debug.Trace
 
+import Advent
+
 main :: IO ()
-main = C.interact partTwo
+main = Advent.interactLines partTwo
 
 traceValue :: Show a => String -> a -> a
 traceValue tag value = trace (tag ++ ": " ++ show value) value
 
-partOne :: C.ByteString -> C.ByteString
-partOne = toLazyByteString . (<> char8 '\n') . intDec . countIncreases . parse
+partOne :: [Int] -> Int
+partOne = countIncreases
+-- partOne = toLazyByteString . (<> char8 '\n') . intDec . countIncreases . parse
 
-partTwo :: C.ByteString -> C.ByteString
-partTwo = toLazyByteString . (<> char8 '\n') . intDec . countIncreases . map sumTriple . toTriples . parse
+partTwo :: [Int] -> Int
+partTwo = countIncreases . map sumTriple . toTriples
 
-parse :: C.ByteString -> [Int]
-parse = map (fst . fromJust . C.readInt) . C.lines
--- TODO: Oh. `fromJust` is bad.
+instance Advent.Parseable Int where
+  parse = fmap fst . C.readInt
 
 toTriples :: [Int] -> [(Int, Int, Int)]
 toTriples (a : rest@(b : c : _)) = (a, b, c) : toTriples rest
