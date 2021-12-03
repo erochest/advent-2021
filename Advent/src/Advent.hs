@@ -1,12 +1,18 @@
 module Advent
     ( interactLines
     , Parseable(..)
+    , inspect
     ) where
 
 import Data.Maybe (mapMaybe)
 
 import Data.ByteString.Builder
 import qualified Data.ByteString.Lazy.Char8 as C
+
+import Debug.Trace
+
+inspect :: Show a => String -> a -> a
+inspect tag value = trace (tag ++ ": " ++ show value) value
 
 class Parseable a where
   parse :: C.ByteString -> Maybe a

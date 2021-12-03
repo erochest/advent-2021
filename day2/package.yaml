@@ -1,6 +1,6 @@
-name:                day1
+name:                day2
 version:             0.1.0.0
-github:              "erochest/day1"
+github:              "erochest/day2"
 license:             BSD3
 author:              "Eric Rochester"
 maintainer:          "erochest@gmail.com"
@@ -12,23 +12,25 @@ extra-source-files:
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
-# category:            Puzzle
+# category:            Utilities
 
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/erochest/day1#readme>
+description:         Please see the README on GitHub at <https://github.com/erochest/day2#readme>
 
 dependencies:
 - base >= 4.7 && < 5
-- bytestring
-- Advent
 
 library:
   source-dirs: src
+  dependencies:
+  - bytestring
+  - attoparsec
+  - Advent
 
 executables:
-  day1-exe:
+  day2-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -36,10 +38,11 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - day1
+    - day2
+    - Advent
 
 tests:
-  day1-test:
+  day2-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -47,4 +50,9 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - day1
+    - Advent
+    - day2
+    - attoparsec
+    - bytestring
+    - tasty
+    - tasty-hunit

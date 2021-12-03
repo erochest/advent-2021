@@ -1,4 +1,6 @@
 packages:
+- day2
 - day1
+- Advent
 extra-deps: []
 resolver: lts-18.18
