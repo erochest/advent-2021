@@ -8,5 +8,5 @@ import Advent.Day2
 import Debug.Trace
 
 main :: IO ()
-main = Advent.interactLines partOne
+main = Advent.interactLines partTwo
 

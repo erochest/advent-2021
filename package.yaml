@@ -51,14 +51,12 @@ executables:
 tests:
   day2-test:
     main:                Spec.hs
-    source-dirs:         test
+    source-dirs:         test/day2
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
     - Advent2021
-    - attoparsec
-    - bytestring
     - tasty
     - tasty-hunit

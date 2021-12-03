@@ -71,7 +71,7 @@ test-suite day2-test
   other-modules:
       Paths_Advent2021
   hs-source-dirs:
-      test
+      test/day2
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       Advent2021
