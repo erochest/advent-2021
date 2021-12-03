@@ -3,7 +3,7 @@
 module Main where
 
 import Advent
-import Day2
+import Advent.Day2
 
 import Debug.Trace
 

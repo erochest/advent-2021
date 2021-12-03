@@ -8,7 +8,7 @@ import Test.Tasty.HUnit
 import Data.Attoparsec.ByteString.Char8 (parseOnly)
 
 import Advent
-import Day2
+import Advent.Day2
 
 main :: IO ()
 main = defaultMain suite

@@ -1,6 +1,6 @@
-name:                Advent
+name:                Advent2021
 version:             0.1.0.0
-github:              "erochest/Advent"
+github:              "erochest/advent-2021"
 license:             BSD3
 author:              "Eric Rochester"
 maintainer:          "erochest@gmail.com"
@@ -17,18 +17,39 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/erochest/Advent#readme>
+description:         Please see the README on GitHub at <https://github.com/erochest/day2#readme>
 
 dependencies:
 - base >= 4.7 && < 5
+- attoparsec
+- bytestring
 
 library:
   source-dirs: src
-  dependencies:
-  - bytestring
+
+executables:
+  day1-exe:
+    main:                Main.hs
+    source-dirs:         app/day1
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - Advent2021
+
+  day2-exe:
+    main:                Main.hs
+    source-dirs:         app/day2
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - Advent2021
 
 tests:
-  Advent-test:
+  day2-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -36,4 +57,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - Advent
+    - Advent2021
+    - attoparsec
+    - bytestring
+    - tasty
+    - tasty-hunit
