@@ -4,4 +4,4 @@ import Advent
 import Advent.Day3
 
 main :: IO ()
-main = Advent.interactLines partOne
+main = Advent.interactLines partTwo
