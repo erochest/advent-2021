@@ -215,5 +215,24 @@ suite = testGroup "day 4"
           sumMarked session @?= 188
         ]
       ]
+    , testGroup "part 2"
+      [ testGroup "partTwo"
+        [ testCase "finds the losing board's checksum" $
+          partTwo fixture @?= 1924
+        ]
+      , testGroup "playToLast"
+        [ testCase "plays through to find the last board to win" $ do
+          let board = BingoBoard [  3, 15,  0,  2, 22
+                                 ,  9, 18, 13, 17,  5
+                                 , 19,  8,  7, 25, 23
+                                 , 20, 11, 10, 24,  4
+                                 , 14, 21, 16, 12,  6
+                                 ]
+          let expectedDraw = 13
+          let (actualDraw, actualSession) = playToLast fixture
+          actualDraw @?= expectedDraw
+          bingoBoardSessionBoard actualSession @?= board
+        ]
+      ]
     ]
 

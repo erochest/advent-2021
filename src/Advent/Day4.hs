@@ -11,6 +11,7 @@ module Advent.Day4
   , BingoBoardSession(..)
   , BingoSession(..)
   , play
+  , playToLast
   , createSession
   , playStep
   , hasWon
@@ -35,8 +36,8 @@ import qualified Data.Vector as M
 partOne :: BingoGame -> Int
 partOne = uncurry checksum . play
 
-partTwo :: [()] -> Int
-partTwo = undefined
+partTwo :: BingoGame -> Int
+partTwo = uncurry checksum . playToLast
 
 instance Parseable () where
   parse _ = Nothing
@@ -75,6 +76,20 @@ play game = playLoop game $ createSession game
         in  case winner of
               Nothing -> playLoop game' session'
               Just winner -> (fromMaybe 0 (bingoSessionLastDraw session'), winner)
+
+playToLast :: BingoGame -> (Int, BingoBoardSession)
+playToLast game = playLoop game $ createSession game
+  where
+    playLoop :: BingoGame -> BingoSession -> (Int, BingoBoardSession)
+    playLoop game session
+      = let (game', session') = playStep game session
+            (winners, losers) = V.partition hasWon (bingoSessionBoardSessions session')
+            winner = winners V.!? 0
+        in  case winner of
+              Nothing -> playLoop game' session'
+              Just winner -> if V.length losers == 0
+                             then (fromMaybe 0 (bingoSessionLastDraw session'), winner)
+                             else playLoop game' session' { bingoSessionBoardSessions = losers }
 
 createSession :: BingoGame -> BingoSession
 createSession = (`BingoSession` Nothing) . V.fromList . map createBoardSession . bingoGameBoards
