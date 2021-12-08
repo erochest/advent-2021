@@ -29,6 +29,7 @@ library
       Advent.Day2
       Advent.Day3
       Advent.Day4
+      Advent.Day5
   other-modules:
       Paths_Advent2021
   hs-source-dirs:
@@ -105,6 +106,22 @@ executable day4-exe
     , vector
   default-language: Haskell2010
 
+executable day5-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_Advent2021
+  hs-source-dirs:
+      app/day5
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Advent2021
+    , attoparsec
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , vector
+  default-language: Haskell2010
+
 test-suite day2-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
@@ -150,6 +167,25 @@ test-suite day4-test
       Paths_Advent2021
   hs-source-dirs:
       test/day4
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Advent2021
+    , attoparsec
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , tasty
+    , tasty-hunit
+    , vector
+  default-language: Haskell2010
+
+test-suite day5-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_Advent2021
+  hs-source-dirs:
+      test/day5
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       Advent2021

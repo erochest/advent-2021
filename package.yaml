@@ -70,6 +70,16 @@ executables:
     dependencies:
     - Advent2021
 
+  day5-exe:
+    main:                Main.hs
+    source-dirs:         app/day5
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - Advent2021
+
 tests:
   day2-test:
     main:                Spec.hs
@@ -98,6 +108,18 @@ tests:
   day4-test:
     main:                Spec.hs
     source-dirs:         test/day4
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - Advent2021
+    - tasty
+    - tasty-hunit
+
+  day5-test:
+    main:                Spec.hs
+    source-dirs:         test/day5
     ghc-options:
     - -threaded
     - -rtsopts
