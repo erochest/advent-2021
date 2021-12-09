@@ -18,7 +18,7 @@ import Debug.Trace
 main :: IO ()
 main = defaultMain suite
 
-fixture :: [Segment]
+fixture :: [SegmentData]
 fixture = [ ((0,9), (5,9))
           , ((8,0), (0,8))
           , ((9,4), (3,4))
@@ -31,16 +31,22 @@ fixture = [ ((0,9), (5,9))
           , ((5,5), (8,2))
           ]
 
+straightFixture :: [StraightSegment]
+straightFixture = map SS fixture
+
+crookedFixture :: [CrookedSegment]
+crookedFixture = map CS fixture
+
 suite :: TestTree
 suite = testGroup "day 5"
     [ testGroup "part 1"
       [ testGroup "partOne"
         [ testCase "finds the answer" $
-          partOne fixture @?= 5
+          partOne straightFixture @?= 5
         ]
       , testGroup "parse"
         [ testCase "parses an input line" $ do
-          let expected :: Segment = ((0, 9), (5, 9))
+          let expected = SS ((0, 9), (5, 9))
           parse "0,9 -> 5,9" @?= Just expected
         ]
       , testGroup "countDoubled"
@@ -65,43 +71,43 @@ suite = testGroup "day 5"
         ]
       , testGroup "mapSegments"
         [ testCase "marks starting position on the map" $ do
-          let segment  = ((2, 1), (2, 4))
+          let segment  = SS ((2, 1), (2, 4))
               m        = mapSegments createMap [segment]
           m V.! 1002 @?= 1
         , testCase "increments values for overlapping segments" $ do
           let m0 = createMap
-              m1 = mapSegments m0 [((2, 1), (2, 4)), ((2, 4), (7, 4))]
+              m1 = mapSegments m0 [SS ((2, 1), (2, 4)), SS ((2, 4), (7, 4))]
           m1 V.! 4002 @?= 2
         ]
-      , testGroup "expandSegment"
+      , testGroup "Expandable.expand"
         [ testCase "includes starting position" $ do
-          let segment  = ((2, 1), (2, 4))
-          (2, 1) `elem` expandSegment segment @? "includes starting point"
+          let segment  = SS ((2, 1), (2, 4))
+          (2, 1) `elem` expand segment @? "includes starting point"
         , testCase "includes ending position" $ do
-          let segment = ((2, 1), (2, 4))
-          (2, 4) `elem` expandSegment segment @? "includes ending point"
+          let segment = SS ((2, 1), (2, 4))
+          (2, 4) `elem` expand segment @? "includes ending point"
         , testCase "when start and end are the same, output one item" $ do
-          let segment = ((2, 1), (2, 1))
-          length (expandSegment segment) @?= 1
+          let segment = SS ((2, 1), (2, 1))
+          length (expand segment) @?= 1
         , testCase "includes middle positions going top-to-bottom" $ do
-          let segment = ((2, 1), (2, 4))
-          (2, 2) `elem` expandSegment segment @? "includes middle point"
-          (2, 3) `elem` expandSegment segment @? "includes middle point"
+          let segment = SS ((2, 1), (2, 4))
+          (2, 2) `elem` expand segment @? "includes middle point"
+          (2, 3) `elem` expand segment @? "includes middle point"
         , testCase "includes middle positions going bottom-to-top" $ do
-          let segment = ((2, 4), (2, 1))
-          (2, 2) `elem` expandSegment segment @? "includes middle point"
-          (2, 3) `elem` expandSegment segment @? "includes middle point"
+          let segment = SS ((2, 4), (2, 1))
+          (2, 2) `elem` expand segment @? "includes middle point"
+          (2, 3) `elem` expand segment @? "includes middle point"
         , testCase "includes middle positions going left-to-right" $ do
-          let segment = ((1, 2), (4, 2))
-          (2, 2) `elem` expandSegment segment @? "includes middle point"
-          (3, 2) `elem` expandSegment segment @? "includes middle point"
+          let segment = SS ((1, 2), (4, 2))
+          (2, 2) `elem` expand segment @? "includes middle point"
+          (3, 2) `elem` expand segment @? "includes middle point"
         , testCase "includes middle positions going right-to-left" $ do
-          let segment = ((4, 2), (1, 2))
-          (2, 2) `elem` expandSegment segment @? "includes middle point"
-          (3, 2) `elem` expandSegment segment @? "includes middle point"
+          let segment = SS ((4, 2), (1, 2))
+          (2, 2) `elem` expand segment @? "includes middle point"
+          (3, 2) `elem` expand segment @? "includes middle point"
         , testCase "returns an empty list if the points are on a diagonal" $ do
-          let segment = ((1, 7), (4, 20))
-          length (expandSegment segment) @?= 0
+          let segment = SS ((1, 7), (4, 20))
+          length (expand segment) @?= 0
         ]
       , testGroup "pointIndex"
         [ testCase "maps first row to the column" $ do
@@ -115,7 +121,12 @@ suite = testGroup "day 5"
     , testGroup "part 2"
       [ testGroup "partTwo"
         [ testCase "finds the answer" $
-          partTwo fixture @?= 0
+          partTwo crookedFixture @?= 12
+        ]
+      , testGroup "Expandable.expand" $
+        [ testCase "expands diagonal lines" $ do
+          let segment = CS ((9, 7), (7, 9))
+          (8, 8) `elem` expand segment @? "includes diagonal point"
         ]
       ]
     ]

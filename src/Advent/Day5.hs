@@ -11,10 +11,13 @@ module Advent.Day5
   , partTwo
   , mapDimension
   , Point
-  , Segment
+  , SegmentData
+  , StraightSegment(..)
+  , CrookedSegment(..)
   , Map
   , createMap
   , mapSegments
+  , Expandable(..)
   , expandSegment
   , pointIndex
   , countDoubled
@@ -29,23 +32,32 @@ import Debug.Trace
 
 import Advent
 
-partOne :: [Segment] -> Int
+partOne :: [StraightSegment] -> Int
 partOne = countDoubled . mapSegments createMap
 
-partTwo :: [Segment] -> Int
-partTwo = undefined
+partTwo :: [CrookedSegment] -> Int
+partTwo = countDoubled . mapSegments createMap
 
 mapDimension :: Int
 mapDimension = 1000
 
 type Point = (Int, Int)
-type Segment = (Point, Point)
+
+type SegmentData = (Point, Point)
+newtype StraightSegment = SS SegmentData
+  deriving (Show, Eq)
+newtype CrookedSegment = CS SegmentData
+  deriving (Show, Eq)
+
 type Map = V.Vector Int
 
-instance Parseable Segment where
-  parse = either (const Nothing) Just . parseOnly segment . C.toStrict
+instance Parseable StraightSegment where
+  parse = either (const Nothing) (Just . SS) . parseOnly segment . C.toStrict
 
-segment :: Parser Segment
+instance Parseable CrookedSegment where
+  parse = either (const Nothing) (Just . CS) . parseOnly segment . C.toStrict
+
+segment :: Parser SegmentData
 segment = (,) <$> point <*> (" -> " *> point)
 
 point :: Parser Point
@@ -54,28 +66,35 @@ point = (,) <$> decimal <*> (char8 ',' *> decimal)
 createMap :: Map
 createMap = V.replicate (mapDimension * mapDimension) 0
 
-mapSegments :: Map -> [Segment] -> Map
-mapSegments m segments = V.accum (+) m $ map ((, 1) . pointIndex) (concatMap expandSegment segments)
+class Expandable a where
+  expand :: a -> [Point]
 
-expandSegment :: Segment -> [Point]
-expandSegment (start@(x0, y0), end@(x1, y1))
-  | x0 == x1 || y0 == y1 = expand (offset x0 x1, offset y0 y1) start end
-  | otherwise            = []
-  where
-    offset a b = case compare a b of
-                  LT -> 1
-                  EQ -> 0
-                  GT -> (-1)
-    expand offset@(offsetX, offsetY) start@(x0, y0) end
-      | start == end = [end]
-      | otherwise    = let next = (x0 + offsetX, y0 + offsetY)
-                       in  start:expand offset next end
+mapSegments :: Expandable a => Map -> [a] -> Map
+mapSegments m segments = V.accum (+) m $ map ((, 1) . pointIndex) (concatMap expand segments)
+
+instance Expandable StraightSegment where
+  expand (SS (start@(x0, y0), end@(x1, y1)))
+    | x0 == x1 || y0 == y1 = expandSegment (offset x0 x1, offset y0 y1) start end
+    | otherwise            = []
+
+instance Expandable CrookedSegment where
+  expand (CS (start@(x0, y0), end@(x1, y1)))
+    = expandSegment (offset x0 x1, offset y0 y1) start end
+
+offset :: Ord a => a -> a -> Int
+offset a b = case compare a b of
+              LT -> 1
+              EQ -> 0
+              GT -> (-1)
+
+expandSegment :: (Int, Int) -> Point -> Point -> [Point]
+expandSegment offset@(offsetX, offsetY) start@(x0, y0) end
+  | start == end = [end]
+  | otherwise    = let next = (x0 + offsetX, y0 + offsetY)
+                   in  start:expandSegment offset next end
 
 pointIndex :: Point -> Int
 pointIndex (x, y) = x + y * mapDimension
 
 countDoubled :: Map -> Int
 countDoubled = V.length . V.filter (>1)
-
-instance Parseable () where
-  parse _ = Nothing
