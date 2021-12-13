@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 
+import os
+
 import chevron
 import click
 import yaml
@@ -38,18 +40,20 @@ def update_package(day, package_file=PACKAGE_FILE):
 @click.command()
 @click.option('-d', '--day', required=True, type=int, help='The day to add stuff for.')
 def main(day):
-    params = {'day': '%02d' % (day,)}
+    params = {'day': '%d' % (day,)}
 
     for (src, dest) in NEW_FILES:
         dest = dest % (day,)
 
         if src is None:
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
             f = open(dest, 'w')
             f.close()
 
         else:
             with open(src) as fin:
                 output = chevron.render(fin, params)
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
             with open(dest, 'w') as fout:
                 fout.write(output)
 
