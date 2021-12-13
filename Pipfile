@@ -6,8 +6,10 @@ name = "pypi"
 [packages]
 chevron = "*"
 click = "*"
+pyyaml = "*"
 
 [dev-packages]
+bpython = "*"
 
 [requires]
 python_version = "3.9"
