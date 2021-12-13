@@ -1,24 +1,5 @@
-name:                Advent2021
-version:             0.1.0.0
-github:              "erochest/advent-2021"
-license:             BSD3
-author:              "Eric Rochester"
-maintainer:          "erochest@gmail.com"
-copyright:           "2021"
-
-extra-source-files:
-- README.md
-- ChangeLog.md
-
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Utilities
-
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/erochest/day2#readme>
-
+author: Eric Rochester
+copyright: '2021'
 dependencies:
 - base >= 4.7 && < 5
 - attoparsec
@@ -26,128 +7,135 @@ dependencies:
 - containers
 - parallel
 - vector
-
-library:
-  source-dirs: src
-
+description: Please see the README on GitHub at <https://github.com/erochest/day2#readme>
 executables:
   day1-exe:
-    main:                Main.hs
-    source-dirs:         app/day1
+    dependencies:
+    - Advent2021
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    dependencies:
-    - Advent2021
-
+    main: Main.hs
+    source-dirs: app/day1
   day2-exe:
-    main:                Main.hs
-    source-dirs:         app/day2
+    dependencies:
+    - Advent2021
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    dependencies:
-    - Advent2021
-
+    main: Main.hs
+    source-dirs: app/day2
   day3-exe:
-    main:                Main.hs
-    source-dirs:         app/day3
+    dependencies:
+    - Advent2021
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    dependencies:
-    - Advent2021
-
+    main: Main.hs
+    source-dirs: app/day3
   day4-exe:
-    main:                Main.hs
-    source-dirs:         app/day4
+    dependencies:
+    - Advent2021
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    dependencies:
-    - Advent2021
-
+    main: Main.hs
+    source-dirs: app/day4
   day5-exe:
-    main:                Main.hs
-    source-dirs:         app/day5
+    dependencies:
+    - Advent2021
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    dependencies:
-    - Advent2021
-
+    main: Main.hs
+    source-dirs: app/day5
   day6-exe:
-    main:                Main.hs
-    source-dirs:         app/day6
-    ghc-options:
+    dependencies: &id001
+    - Advent2021
+    ghc-options: &id002
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    dependencies:
-    - Advent2021
-
+    main: Main.hs
+    source-dirs: app/day6
+  day7-exe:
+    dependencies: *id001
+    ghc-options: *id002
+    main: Main.hs
+    source-dirs: app/day7
+extra-source-files:
+- README.md
+- ChangeLog.md
+github: erochest/advent-2021
+library:
+  source-dirs: src
+license: BSD3
+maintainer: erochest@gmail.com
+name: Advent2021
 tests:
   day2-test:
-    main:                Spec.hs
-    source-dirs:         test/day2
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
     dependencies:
     - Advent2021
     - tasty
     - tasty-hunit
-
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    main: Spec.hs
+    source-dirs: test/day2
   day3-test:
-    main:                Spec.hs
-    source-dirs:         test/day3
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
     dependencies:
     - Advent2021
     - tasty
     - tasty-hunit
-
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    main: Spec.hs
+    source-dirs: test/day3
   day4-test:
-    main:                Spec.hs
-    source-dirs:         test/day4
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
     dependencies:
     - Advent2021
     - tasty
     - tasty-hunit
-
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    main: Spec.hs
+    source-dirs: test/day4
   day5-test:
-    main:                Spec.hs
-    source-dirs:         test/day5
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
     dependencies:
     - Advent2021
     - tasty
     - tasty-hunit
-
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    main: Spec.hs
+    source-dirs: test/day5
   day6-test:
-    main:                Spec.hs
-    source-dirs:         test/day6
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
+    dependencies: &id003
     - Advent2021
     - tasty
     - tasty-hunit
+    ghc-options: &id004
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    main: Spec.hs
+    source-dirs: test/day6
+  day7-test:
+    dependencies: *id003
+    ghc-options: *id004
+    main: Spec.hs
+    source-dirs: test/day7
+version: 0.1.0.0
