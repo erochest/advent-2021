@@ -40,6 +40,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , vector
   default-language: Haskell2010
 
@@ -56,6 +57,7 @@ executable day1-exe
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , vector
   default-language: Haskell2010
 
@@ -72,6 +74,7 @@ executable day2-exe
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , vector
   default-language: Haskell2010
 
@@ -88,6 +91,7 @@ executable day3-exe
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , vector
   default-language: Haskell2010
 
@@ -104,6 +108,7 @@ executable day4-exe
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , vector
   default-language: Haskell2010
 
@@ -120,6 +125,7 @@ executable day5-exe
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , vector
   default-language: Haskell2010
 
@@ -136,6 +142,7 @@ executable day6-exe
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , vector
   default-language: Haskell2010
 
@@ -153,6 +160,7 @@ test-suite day2-test
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , tasty
     , tasty-hunit
     , vector
@@ -172,6 +180,7 @@ test-suite day3-test
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , tasty
     , tasty-hunit
     , vector
@@ -191,6 +200,7 @@ test-suite day4-test
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , tasty
     , tasty-hunit
     , vector
@@ -210,6 +220,7 @@ test-suite day5-test
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , tasty
     , tasty-hunit
     , vector
@@ -229,6 +240,7 @@ test-suite day6-test
     , base >=4.7 && <5
     , bytestring
     , containers
+    , parallel
     , tasty
     , tasty-hunit
     , vector

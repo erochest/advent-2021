@@ -55,6 +55,9 @@ suite = testGroup "day 6"
       ]
     ]
   , testGroup "part 2"
-     [ testGroup "partTwo" []
+     [ testGroup "partTwo"
+      [ testCase "calculates the checksum for the fixture" $
+        partTwo fixture @?= 26984457539
+      ]
      ]
   ]
