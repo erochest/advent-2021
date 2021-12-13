@@ -9,25 +9,26 @@
 module Advent.Day6
   ( partOne
   , partTwo
-  , LanternFish(..)
-  , spawnLanternFish
-  , lanternFishDay
-  , lanternFishStep
+  , LanternFishSchool(..)
+  , newLanternFishSchool
+  , addLanternFish
+  , lanternFishSchoolDay
   ) where
 
+import Control.Arrow (first)
 import Data.Foldable
 import Debug.Trace
 
-import Control.Parallel.Strategies
+import qualified Data.Vector as V
 
 import Advent
 import qualified Data.ByteString.Lazy.Char8 as C
 
-partOne :: [LanternFish] -> Int
-partOne = length . lanternFishDays 80
+partOne :: LanternFishSchool -> Int
+partOne = sum . getSchool . lanternFishSchoolDays 80
 
-partTwo :: [LanternFish] -> Int
-partTwo = length  . lanternFishDays 256
+partTwo :: LanternFishSchool -> Int
+partTwo = sum . getSchool . lanternFishSchoolDays 256
 
 spawnStart :: Int 
 spawnStart = 6
@@ -35,22 +36,28 @@ spawnStart = 6
 newFishBonus :: Int 
 newFishBonus = 2
 
-newtype LanternFish = LanternFish { getDays :: Int }
-  deriving (Eq, Show, Ord, NFData)
+newtype LanternFishSchool = LanternFishSchool { getSchool :: V.Vector Int }
+  deriving (Eq, Show, Ord)
 
-lanternFishDays :: Int -> [LanternFish] -> [LanternFish]
-lanternFishDays days school = foldl' lanternFishDay school [1..days]
+lanternFishSchoolDays :: Int -> LanternFishSchool -> LanternFishSchool
+lanternFishSchoolDays days school = foldl' lanternFishSchoolDay school [1..days]
 
-spawnLanternFish :: (LanternFish, LanternFish)
-spawnLanternFish = (LanternFish spawnStart, LanternFish (spawnStart + newFishBonus))
+lanternFishSchoolDay :: LanternFishSchool -> Int -> LanternFishSchool
+lanternFishSchoolDay (LanternFishSchool school) _
+  = LanternFishSchool $ V.update school $ V.map (uncurry day) $ V.indexed school
+  where
+    day :: Int -> Int -> (Int, Int)
+    day i _ = let i' = i + 1
+              in  case i' of
+                  9 -> (i, school V.! 0)
+                  7 -> (i, school V.! 0 + school V.! i')
+                  _ -> (i, school V.! i')
 
-lanternFishStep :: LanternFish -> [LanternFish]
-lanternFishStep (LanternFish 0) = let (lf0, lf1) = spawnLanternFish in [lf0, lf1]
-lanternFishStep (LanternFish p) = [LanternFish (p - 1)]
+newLanternFishSchool :: LanternFishSchool
+newLanternFishSchool = LanternFishSchool $ V.replicate 9 0
 
-lanternFishDay :: [LanternFish] -> Int -> [LanternFish]
-lanternFishDay school _ = concat (map lanternFishStep school `using` parListChunk 1024 rdeepseq)
-  -- concatMap lanternFishStep school
+addLanternFish :: LanternFishSchool -> [Int] -> LanternFishSchool
+addLanternFish (LanternFishSchool school) = LanternFishSchool . V.accum (+) school . map (,1)
 
-instance Parseable [LanternFish] where
-  parse = traverse (fmap (LanternFish . fst) . C.readInt) . C.split ','
+instance Parseable LanternFishSchool where
+  parse = fmap (addLanternFish newLanternFishSchool) . traverse (fmap fst . C.readInt) . C.split ','
